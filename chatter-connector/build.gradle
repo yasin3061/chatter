@@ -1,0 +1,16 @@
+group 'com.yasinbee.chatter'
+version '1.0-SNAPSHOT'
+
+subprojects {
+    apply plugin: 'idea'
+    apply plugin: 'java'
+
+    repositories {
+        mavenCentral()
+    }
+
+    compileJava {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
+}
