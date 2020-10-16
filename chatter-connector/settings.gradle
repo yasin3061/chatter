@@ -1,4 +1,5 @@
 rootProject.name = 'chatter-connector'
 include 'connector-api'
 include 'connector'
+include 'client'
 
