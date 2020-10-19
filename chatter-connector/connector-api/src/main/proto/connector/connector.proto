@@ -10,10 +10,6 @@ message User {
   string id = 1;
 }
 
-message Connect {
-  User user = 1;
-}
-
 message Message {
   string from = 1;
   string to = 2;
@@ -22,3 +18,5 @@ message Message {
 }
 
 message Disconnect {}
+
+message MessageResponse {}

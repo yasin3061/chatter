@@ -7,5 +7,7 @@ option java_package = "com.yasinbee.connector.api.service";
 import "connector/connector.proto";
 
 service ConnectorService {
-  rpc connectUser(Connect) returns (stream Message);
+  rpc connectUser(User) returns (stream Message);
+  rpc sendMessage(Message) returns (MessageResponse);
+  rpc disconnectUser(User) returns (Disconnect);
 }
