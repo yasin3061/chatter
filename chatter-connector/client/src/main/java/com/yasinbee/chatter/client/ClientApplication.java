@@ -1,9 +1,11 @@
 package com.yasinbee.chatter.client;
 
-import com.yasinbee.chatter.client.connect.ChatServerConnection;
-import com.yasinbee.chatter.client.message.MessageForwarder;
+import com.yasinbee.chatter.client.connect.MessageReceiverThread;
+import com.yasinbee.chatter.client.connect.ShutdownHook;
+import com.yasinbee.chatter.client.grpc.out.ConnectorServiceProxy;
 import com.yasinbee.connector.api.dto.Message;
 import com.yasinbee.connector.api.dto.User;
+import com.yasinbee.connector.api.service.ConnectorService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -21,15 +23,15 @@ public class ClientApplication implements CommandLineRunner {
     public void run(String... args) throws Exception {
         Scanner in = new Scanner(System.in);
 
-        System.out.println("Enter the user name");
+        System.out.println("Enter your username");
         String currentUser = in.nextLine();
         User user = User.newBuilder().setId(currentUser).build();
 
-        ChatServerConnection connection = new ChatServerConnection(user);
-
-        connection.connect();
-
-        Runtime.getRuntime().addShutdownHook(new Thread(connection::disconnect));
+        ConnectorService connector = new ConnectorServiceProxy();
+        MessageReceiverThread messageReceiver = new MessageReceiverThread(connector, user);
+        messageReceiver.startThread();
+        ShutdownHook shutdownHook = new ShutdownHook(connector, user);
+        shutdownHook.register();
 
         String receiver = "";
         while (!receiver.equals("quit")) {
@@ -41,9 +43,10 @@ public class ClientApplication implements CommandLineRunner {
             while (!message.equals("close")) {
                 System.out.println("Enter message (type 'close' to select another user)");
                 message = in.nextLine();
-                MessageForwarder forwarder = new MessageForwarder();
-                forwarder.forward(Message.newBuilder().setFrom(currentUser).setTo(receiver)
-                        .setText(message).build());
+                if (!"close".equals(message)) {
+                    connector.sendMessage(Message.newBuilder().setFrom(currentUser).setTo(receiver)
+                            .setText(message).build());
+                }
             }
         }
 
