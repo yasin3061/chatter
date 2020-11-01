@@ -32,11 +32,6 @@ public class ConnectorServiceProxy implements ConnectorService {
     }
 
     @Override
-    public MessageResponse deliverMessage(Message message) {
-        return null;
-    }
-
-    @Override
     public Disconnect disconnectUser(User user) {
         Disconnect disconnectResponse =
                 (Disconnect) connectionClient.invokeUnaryCall(ConnectorServiceGrpc::getDisconnectUserMethod,
