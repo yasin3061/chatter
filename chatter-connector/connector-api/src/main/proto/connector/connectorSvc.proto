@@ -11,3 +11,7 @@ service ConnectorService {
   rpc sendMessage(Message) returns (MessageResponse);
   rpc disconnectUser(User) returns (Disconnect);
 }
+
+service DeliveryService {
+  rpc deliverMessage(Message) returns (MessageResponse);
+}
