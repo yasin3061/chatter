@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package connector;
+option java_multiple_files = true;
+option java_package = "com.yasinbee.router.api.dto";
+
+import "connector/connector.proto";
+
+message UserSessionRequest {
+  User user = 1;
+}
+
+message UserSessionResponse {}
+
+message RouteMessageRequest {
+  Message message = 1;
+}
+
+message RouteMessageResponse {}

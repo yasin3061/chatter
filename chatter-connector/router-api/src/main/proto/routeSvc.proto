@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package connector;
+option java_multiple_files = true;
+option java_package = "com.yasinbee.router.api.service";
+
+import "route.proto";
+
+service RouterService {
+  rpc registerUserSession(UserSessionRequest) returns (UserSessionResponse);
+  rpc removeUserSession(UserSessionRequest) returns (UserSessionResponse);
+  rpc routeMessage(RouteMessageRequest) returns (RouteMessageResponse);
+}
